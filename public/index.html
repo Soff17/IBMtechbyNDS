@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DevBlog</title>
+  <style>
+    :root {
+      --accent: #4f46e5;
+      --accent-dark: #3730a3;
+      --bg: #f5f6fb;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0 16px 64px;
+    }
+    header {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 0 24px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      flex-shrink: 0;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 6px 0 0;
+      font-size: 0.95rem;
+    }
+    main { max-width: 720px; margin: 0 auto; }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: end;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 28px;
+    }
+    .field { display: flex; flex-direction: column; gap: 4px; }
+    .field label { font-size: 0.75rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+    .field input {
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+    .field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    button {
+      padding: 9px 16px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    #filtrar { background: var(--accent); color: #fff; }
+    #filtrar:hover { background: var(--accent-dark); }
+    #limpiar { background: transparent; color: var(--muted); border-color: var(--border); }
+    #limpiar:hover { background: #f0f0f5; }
+
+    .post {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 16px;
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+    .post:hover {
+      box-shadow: 0 6px 20px rgba(20, 20, 43, 0.06);
+      transform: translateY(-1px);
+    }
+    .post h2 { margin: 0 0 10px; font-size: 1.15rem; letter-spacing: -0.01em; }
+    .meta { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .meta-text { font-size: 0.85rem; color: var(--muted); }
+    .category {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--accent-dark);
+      background: #eef0fd;
+      border-radius: 999px;
+      padding: 2px 10px;
+      margin-left: 4px;
+    }
+    .content { white-space: pre-wrap; line-height: 1.55; font-size: 0.95rem; }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 48px 16px;
+      background: var(--card);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+    }
+
+    .toolbar { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+    #toggleForm { background: var(--accent); color: #fff; }
+    #toggleForm:hover { background: var(--accent-dark); }
+
+    .new-post {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .new-post.open { display: block; }
+    .new-post h3 { margin: 0 0 14px; font-size: 1rem; }
+    .new-post .field { margin-bottom: 12px; }
+    .new-post label { font-size: 0.78rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; display: block; margin-bottom: 4px; }
+    .new-post input[type="text"],
+    .new-post textarea {
+      width: 100%;
+      padding: 9px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+    .new-post textarea { min-height: 90px; resize: vertical; }
+    .new-post input:focus,
+    .new-post textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .form-actions { display: flex; gap: 8px; justify-content: flex-end; }
+    #cancelPost { background: transparent; color: var(--muted); border-color: var(--border); }
+    #cancelPost:hover { background: #f0f0f5; }
+    #savePost { background: var(--accent); color: #fff; }
+    #savePost:hover { background: var(--accent-dark); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <h1>DevBlog</h1>
+    </div>
+    <p class="subtitle">Noticias y artículos del equipo</p>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <button id="toggleForm">+ Nuevo post</button>
+    </div>
+
+    <div class="new-post" id="newPostForm">
+      <h3>Crear post</h3>
+      <div class="field">
+        <label for="newTitle">Título</label>
+        <input type="text" id="newTitle" />
+      </div>
+      <div class="field">
+        <label for="newAuthor">Autor</label>
+        <input type="text" id="newAuthor" />
+      </div>
+      <div class="field">
+        <label for="newContent">Contenido</label>
+        <textarea id="newContent"></textarea>
+      </div>
+      <div class="form-actions">
+        <button id="cancelPost">Cancelar</button>
+        <button id="savePost">Publicar</button>
+      </div>
+    </div>
+
+    <div class="filters">
+      <div class="field">
+        <label for="desde">Desde</label>
+        <input type="date" id="desde" />
+      </div>
+      <div class="field">
+        <label for="hasta">Hasta</label>
+        <input type="date" id="hasta" />
+      </div>
+      <button id="filtrar">Filtrar</button>
+      <button id="limpiar">Limpiar</button>
+    </div>
+
+    <div id="posts"></div>
+  </main>
+
+  <script>
+    const postsEl = document.getElementById("posts");
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str ?? "";
+      return div.innerHTML;
+    }
+
+    function formatDate(isoDate) {
+      const [y, m, d] = isoDate.split("-").map(Number);
+      const date = new Date(y, m - 1, d);
+      return date.toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric" });
+    }
+
+    function initials(name) {
+      return name
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((w) => w[0].toUpperCase())
+        .join("");
+    }
+
+    async function loadPosts(params) {
+      const query = params ? "?" + new URLSearchParams(params).toString() : "";
+      const res = await fetch("/posts" + query);
+      const posts = await res.json();
+      render(posts);
+    }
+
+    function render(posts) {
+      postsEl.innerHTML = "";
+      if (posts.length === 0) {
+        postsEl.innerHTML = '<div class="empty">No hay posts para este filtro.</div>';
+        return;
+      }
+      for (const post of posts) {
+        const div = document.createElement("div");
+        div.className = "post";
+        const categoryBadge = post.category
+          ? `<span class="category">${escapeHtml(post.category)}</span>`
+          : "";
+        div.innerHTML = `
+          <h2>${escapeHtml(post.title)}</h2>
+          <div class="meta">
+            <span class="avatar">${escapeHtml(initials(post.author))}</span>
+            <span class="meta-text">${escapeHtml(post.author)} · ${formatDate(post.publishedAt)}</span>
+            ${categoryBadge}
+          </div>
+          <div class="content">${escapeHtml(post.content)}</div>
+        `;
+        postsEl.appendChild(div);
+      }
+    }
+
+    document.getElementById("filtrar").addEventListener("click", () => {
+      const desde = document.getElementById("desde").value;
+      const hasta = document.getElementById("hasta").value;
+      loadPosts({ ...(desde && { desde }), ...(hasta && { hasta }) });
+    });
+
+    document.getElementById("limpiar").addEventListener("click", () => {
+      document.getElementById("desde").value = "";
+      document.getElementById("hasta").value = "";
+      loadPosts();
+    });
+
+    const newPostForm = document.getElementById("newPostForm");
+
+    document.getElementById("toggleForm").addEventListener("click", () => {
+      newPostForm.classList.toggle("open");
+    });
+
+    document.getElementById("cancelPost").addEventListener("click", () => {
+      newPostForm.classList.remove("open");
+      document.getElementById("newTitle").value = "";
+      document.getElementById("newAuthor").value = "";
+      document.getElementById("newContent").value = "";
+    });
+
+    document.getElementById("savePost").addEventListener("click", async () => {
+      const title = document.getElementById("newTitle").value;
+      const author = document.getElementById("newAuthor").value;
+      const content = document.getElementById("newContent").value;
+
+      await fetch("/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, author, content })
+      });
+
+      document.getElementById("newTitle").value = "";
+      document.getElementById("newAuthor").value = "";
+      document.getElementById("newContent").value = "";
+      newPostForm.classList.remove("open");
+      loadPosts();
+    });
+
+    loadPosts();
+  </script>
+</body>
+</html>
