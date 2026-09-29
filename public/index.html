@@ -5,185 +5,276 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DevBlog</title>
   <style>
+    @font-face {
+      font-family: "IBM Plex Sans";
+      font-weight: 400;
+      src: url("/fonts/IBMPlexSans-Regular.ttf") format("truetype");
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "IBM Plex Sans";
+      font-weight: 500;
+      src: url("/fonts/IBMPlexSans-Medium.ttf") format("truetype");
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "IBM Plex Sans";
+      font-weight: 600;
+      src: url("/fonts/IBMPlexSans-SemiBold.ttf") format("truetype");
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "IBM Plex Sans";
+      font-weight: 700;
+      src: url("/fonts/IBMPlexSans-Bold.ttf") format("truetype");
+      font-display: swap;
+    }
+
     :root {
-      --accent: #0b5fff;
-      --accent-dark: #0842b5;
-      --bg: #f7f9fc;
-      --card: #ffffff;
-      --border: #e2e6ed;
-      --text: #16202e;
-      --muted: #64748b;
+      /* Carbon Design System palette */
+      --ibm-blue-60: #0f62fe;
+      --ibm-blue-70: #0043ce;
+      --ibm-blue-10: #edf5ff;
+      --ibm-gray-100: #161616;
+      --ibm-gray-90: #262626;
+      --ibm-gray-70: #525252;
+      --ibm-gray-50: #8d8d8d;
+      --ibm-gray-20: #e0e0e0;
+      --ibm-gray-10: #f4f4f4;
+      --ibm-white: #ffffff;
+      --ibm-support-error: #da1e28;
+      --ibm-support-success: #24a148;
     }
     * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 0 16px 64px;
+      font-family: "IBM Plex Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--ibm-gray-10);
+      color: var(--ibm-gray-100);
+      font-size: 15px;
+      line-height: 1.4;
     }
-    header {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 48px 0 24px;
-    }
-    .brand {
+
+    /* UI shell header, Carbon-style */
+    .shell-header {
+      background: var(--ibm-gray-100);
+      color: var(--ibm-white);
+      height: 48px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      padding: 0 16px;
+      border-bottom: 1px solid #393939;
     }
-    .brand-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 9px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    .shell-header .logo {
+      width: 8px;
+      height: 8px;
+      background: var(--ibm-blue-60);
+      margin-right: 12px;
       flex-shrink: 0;
+    }
+    .shell-header .product {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      letter-spacing: 0.01em;
+    }
+    .shell-header .divider {
+      width: 1px;
+      height: 24px;
+      background: #393939;
+      margin: 0 12px;
+    }
+    .shell-header .tagline {
+      color: var(--ibm-gray-50);
+      font-size: 0.8125rem;
+    }
+
+    .band {
+      background: var(--ibm-white);
+      border-bottom: 1px solid var(--ibm-gray-20);
+    }
+    .band-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 40px 24px 32px;
+    }
+    .eyebrow {
+      color: var(--ibm-blue-60);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 8px;
     }
     h1 {
       margin: 0;
-      font-size: 1.6rem;
-      letter-spacing: -0.02em;
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--ibm-gray-100);
     }
     .subtitle {
-      color: var(--muted);
-      margin: 6px 0 0;
-      font-size: 0.95rem;
+      color: var(--ibm-gray-70);
+      margin: 10px 0 0;
+      font-size: 1rem;
+      max-width: 46ch;
     }
-    main { max-width: 720px; margin: 0 auto; }
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: end;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 28px;
-    }
-    .field { display: flex; flex-direction: column; gap: 4px; }
-    .field label { font-size: 0.75rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
-    .field input {
-      padding: 8px 10px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-family: inherit;
-    }
-    .field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-    button {
-      padding: 9px 16px;
-      border-radius: 8px;
-      border: 1px solid transparent;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    #filtrar { background: var(--accent); color: #fff; }
-    #filtrar:hover { background: var(--accent-dark); }
-    #limpiar { background: transparent; color: var(--muted); border-color: var(--border); }
-    #limpiar:hover { background: #f0f0f5; }
 
-    .post {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px 22px;
+    main { max-width: 760px; margin: 0 auto; padding: 28px 24px 80px; }
+
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
       margin-bottom: 16px;
-      transition: box-shadow 0.15s ease, transform 0.15s ease;
     }
-    .post:hover {
-      box-shadow: 0 6px 20px rgba(20, 20, 43, 0.06);
-      transform: translateY(-1px);
+
+    button {
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 0;
+      border: 1px solid transparent;
+      padding: 11px 16px;
+      transition: background-color 0.1s ease;
     }
-    .post h2 { margin: 0 0 10px; font-size: 1.15rem; letter-spacing: -0.01em; }
-    .meta { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .btn-primary { background: var(--ibm-blue-60); color: var(--ibm-white); }
+    .btn-primary:hover { background: var(--ibm-blue-70); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--ibm-gray-100);
+      border-color: var(--ibm-gray-100);
+    }
+    .btn-secondary:hover { background: var(--ibm-gray-10); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--ibm-gray-70);
+      border-color: var(--ibm-gray-20);
+    }
+    .btn-ghost:hover { background: var(--ibm-gray-10); }
+
+    .panel {
+      background: var(--ibm-white);
+      border: 1px solid var(--ibm-gray-20);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .panel-title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ibm-gray-70);
+      margin: 0 0 16px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .field:last-of-type { margin-bottom: 0; }
+    .field label {
+      font-size: 0.75rem;
+      color: var(--ibm-gray-70);
+      font-weight: 400;
+    }
+    .field input[type="text"],
+    .field input[type="date"],
+    .field textarea {
+      font-family: inherit;
+      font-size: 0.875rem;
+      background: var(--ibm-gray-10);
+      border: none;
+      border-bottom: 1px solid var(--ibm-gray-50);
+      padding: 10px 12px;
+      color: var(--ibm-gray-100);
+      border-radius: 0;
+    }
+    .field input:focus,
+    .field textarea:focus {
+      outline: 2px solid var(--ibm-blue-60);
+      outline-offset: -2px;
+    }
+    .field textarea { min-height: 96px; resize: vertical; }
+
+    .filters-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+    .filters-row .field { margin-bottom: 0; min-width: 160px; }
+    .filters-row .actions { display: flex; gap: 8px; }
+
+    .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+
+    .new-post { display: none; }
+    .new-post.open { display: block; }
+
+    .post-list { display: flex; flex-direction: column; gap: 1px; background: var(--ibm-gray-20); border: 1px solid var(--ibm-gray-20); }
+    .post {
+      background: var(--ibm-white);
+      padding: 24px;
+      border-left: 3px solid transparent;
+      transition: border-color 0.12s ease;
+    }
+    .post:hover { border-left-color: var(--ibm-blue-60); }
+    .post h2 {
+      margin: 0 0 8px;
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: -0.005em;
+    }
+    .meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
     .avatar {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: #fff;
-      font-size: 0.7rem;
-      font-weight: 700;
+      width: 24px;
+      height: 24px;
+      background: var(--ibm-gray-100);
+      color: var(--ibm-white);
+      font-size: 0.6875rem;
+      font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
-    .meta-text { font-size: 0.85rem; color: var(--muted); }
-    .category {
-      font-size: 0.72rem;
+    .meta-text { font-size: 0.8125rem; color: var(--ibm-gray-70); }
+    .tag {
+      font-size: 0.6875rem;
       font-weight: 600;
-      color: var(--accent-dark);
-      background: #eef0fd;
-      border-radius: 999px;
-      padding: 2px 10px;
-      margin-left: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--ibm-blue-70);
+      background: var(--ibm-blue-10);
+      padding: 3px 8px;
     }
-    .content { white-space: pre-wrap; line-height: 1.55; font-size: 0.95rem; }
+    .content { white-space: pre-line; line-height: 1.6; font-size: 0.9375rem; color: var(--ibm-gray-90); }
+    .content h3 { margin: 0 0 6px; font-size: 1rem; font-weight: 600; color: var(--ibm-gray-100); }
 
     .empty {
       text-align: center;
-      color: var(--muted);
-      padding: 48px 16px;
-      background: var(--card);
-      border: 1px dashed var(--border);
-      border-radius: 12px;
+      color: var(--ibm-gray-70);
+      padding: 56px 16px;
+      background: var(--ibm-white);
+      border: 1px dashed var(--ibm-gray-20);
+      font-size: 0.9375rem;
     }
-
-    .toolbar { display: flex; justify-content: flex-end; margin-bottom: 12px; }
-    #toggleForm { background: var(--accent); color: #fff; }
-    #toggleForm:hover { background: var(--accent-dark); }
-
-    .new-post {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 20px;
-      margin-bottom: 20px;
-      display: none;
-    }
-    .new-post.open { display: block; }
-    .new-post h3 { margin: 0 0 14px; font-size: 1rem; }
-    .new-post .field { margin-bottom: 12px; }
-    .new-post label { font-size: 0.78rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; display: block; margin-bottom: 4px; }
-    .new-post input[type="text"],
-    .new-post textarea {
-      width: 100%;
-      padding: 9px 10px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-family: inherit;
-    }
-    .new-post textarea { min-height: 90px; resize: vertical; }
-    .new-post input:focus,
-    .new-post textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-    .form-actions { display: flex; gap: 8px; justify-content: flex-end; }
-    #cancelPost { background: transparent; color: var(--muted); border-color: var(--border); }
-    #cancelPost:hover { background: #f0f0f5; }
-    #savePost { background: var(--accent); color: #fff; }
-    #savePost:hover { background: var(--accent-dark); }
   </style>
 </head>
 <body>
-  <header>
-    <div class="brand">
-      <div class="brand-mark"></div>
-      <h1>DevBlog</h1>
-    </div>
-    <p class="subtitle">Noticias y artículos del equipo</p>
+  <header class="shell-header">
+    <div class="logo"></div>
+    <div class="product">DevBlog</div>
+    <div class="divider"></div>
+    <div class="tagline">IBM tech by NDS</div>
   </header>
+
+  <div class="band">
+    <div class="band-inner">
+      <p class="eyebrow">Equipo de ingeniería</p>
+      <h1>DevBlog</h1>
+      <p class="subtitle">Noticias, avances y aprendizajes del equipo.</p>
+    </div>
+  </div>
 
   <main>
     <div class="toolbar">
-      <button id="toggleForm">+ Nuevo post</button>
+      <button class="btn-primary" id="toggleForm">+ Nuevo post</button>
     </div>
 
-    <div class="new-post" id="newPostForm">
-      <h3>Crear post</h3>
+    <div class="panel new-post" id="newPostForm">
+      <p class="panel-title">Crear post</p>
       <div class="field">
         <label for="newTitle">Título</label>
         <input type="text" id="newTitle" />
@@ -193,26 +284,40 @@
         <input type="text" id="newAuthor" />
       </div>
       <div class="field">
-        <label for="newContent">Contenido</label>
+        <label for="newCategory">Categoría</label>
+        <select id="newCategory" style="font-family:inherit;font-size:0.875rem;background:var(--ibm-gray-10);border:none;border-bottom:1px solid var(--ibm-gray-50);padding:10px 12px;color:var(--ibm-gray-100);border-radius:0;">
+          <option value="">Sin categoría</option>
+          <option value="Noticias">Noticias</option>
+          <option value="Tips">Tips</option>
+          <option value="Roadmap">Roadmap</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="newContent">Contenido (soporta **negritas**, *cursivas* y # encabezados)</label>
         <textarea id="newContent"></textarea>
       </div>
       <div class="form-actions">
-        <button id="cancelPost">Cancelar</button>
-        <button id="savePost">Publicar</button>
+        <button class="btn-ghost" id="cancelPost">Cancelar</button>
+        <button class="btn-primary" id="savePost">Publicar</button>
       </div>
     </div>
 
-    <div class="filters">
-      <div class="field">
-        <label for="desde">Desde</label>
-        <input type="date" id="desde" />
+    <div class="panel">
+      <p class="panel-title">Filtrar por fecha de publicación</p>
+      <div class="filters-row">
+        <div class="field">
+          <label for="desde">Desde</label>
+          <input type="date" id="desde" />
+        </div>
+        <div class="field">
+          <label for="hasta">Hasta</label>
+          <input type="date" id="hasta" />
+        </div>
+        <div class="actions">
+          <button class="btn-primary" id="filtrar">Filtrar</button>
+          <button class="btn-ghost" id="limpiar">Limpiar</button>
+        </div>
       </div>
-      <div class="field">
-        <label for="hasta">Hasta</label>
-        <input type="date" id="hasta" />
-      </div>
-      <button id="filtrar">Filtrar</button>
-      <button id="limpiar">Limpiar</button>
     </div>
 
     <div id="posts"></div>
@@ -225,6 +330,20 @@
       const div = document.createElement("div");
       div.textContent = str ?? "";
       return div.innerHTML;
+    }
+
+    function parseMarkdown(str) {
+      return escapeHtml(str ?? "")
+        .split("\n")
+        .map((line) => {
+          if (/^# /.test(line)) {
+            return "<h3>" + line.slice(2) + "</h3>";
+          }
+          return line
+            .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+            .replace(/\*(.+?)\*/g, "<em>$1</em>");
+        })
+        .join("\n");
     }
 
     function formatDate(isoDate) {
@@ -255,23 +374,26 @@
         postsEl.innerHTML = '<div class="empty">No hay posts para este filtro.</div>';
         return;
       }
+      const list = document.createElement("div");
+      list.className = "post-list";
       for (const post of posts) {
         const div = document.createElement("div");
         div.className = "post";
-        const categoryBadge = post.category
-          ? `<span class="category">${escapeHtml(post.category)}</span>`
+        const categoryTag = post.category
+          ? `<span class="tag">${escapeHtml(post.category)}</span>`
           : "";
         div.innerHTML = `
           <h2>${escapeHtml(post.title)}</h2>
           <div class="meta">
             <span class="avatar">${escapeHtml(initials(post.author))}</span>
             <span class="meta-text">${escapeHtml(post.author)} · ${formatDate(post.publishedAt)}</span>
-            ${categoryBadge}
+            ${categoryTag}
           </div>
-          <div class="content">${escapeHtml(post.content)}</div>
+          <div class="content">${parseMarkdown(post.content)}</div>
         `;
-        postsEl.appendChild(div);
+        list.appendChild(div);
       }
+      postsEl.appendChild(list);
     }
 
     document.getElementById("filtrar").addEventListener("click", () => {
@@ -296,22 +418,25 @@
       newPostForm.classList.remove("open");
       document.getElementById("newTitle").value = "";
       document.getElementById("newAuthor").value = "";
+      document.getElementById("newCategory").value = "";
       document.getElementById("newContent").value = "";
     });
 
     document.getElementById("savePost").addEventListener("click", async () => {
       const title = document.getElementById("newTitle").value;
       const author = document.getElementById("newAuthor").value;
+      const category = document.getElementById("newCategory").value;
       const content = document.getElementById("newContent").value;
 
       await fetch("/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, author, content })
+        body: JSON.stringify({ title, author, category: category || undefined, content })
       });
 
       document.getElementById("newTitle").value = "";
       document.getElementById("newAuthor").value = "";
+      document.getElementById("newCategory").value = "";
       document.getElementById("newContent").value = "";
       newPostForm.classList.remove("open");
       loadPosts();
